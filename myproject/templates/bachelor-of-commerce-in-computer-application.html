@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en-US" class="no-js">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>BCom Computer Application - Islamia Karimia College</title>
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'plugins/goodlayers-core/plugins/combine/style.css' %}" type="text/css" media="all" />
+    <link rel="stylesheet" href="{% static 'plugins/goodlayers-core/include/css/page-builder.css' %}" type="text/css" media="all" />
+    <link rel="stylesheet" href="{% static 'plugins/revslider/public/assets/css/settings.css' %}" type="text/css" media="all" />
+    <link rel="stylesheet" href="{% static 'css/style-core.css' %}" type="text/css" media="all" />
+    <link rel="stylesheet" href="{% static 'css/kingster-style-custom.css' %}" type="text/css" media="all" />
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0" />
+    <script src="{% static 'script-chatbot.js' %}" defer></script>
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700%2C400" rel="stylesheet" property="stylesheet" type="text/css" media="all">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins%3A100%2C100italic%2C200%2C200italic%2C300%2C300italic%2Cregular%2Citalic%2C500%2C500italic%2C600%2C600italic%2C700%2C700italic%2C800%2C800italic%2C900%2C900italic%7CABeeZee%3Aregular%2Citalic&amp;subset=latin%2Clatin-ext%2Cdevanagari&amp;ver=5.0.3" type="text/css" media="all" />
+    <style>
+        /* Import Google font - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Ensuring the chatbot appears above all content */
+.chatbot-toggler, .chatbot {
+  z-index: 1000;
+  position: fixed;
+}
+
+/* Chatbot Toggler Styles */
+.chatbot-toggler {
+  bottom: 30px;
+  right: 35px;
+  outline: none;
+  border: none;
+  height: 120px;
+  width: 120px;
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #94D4EEDC;
+  transition: all 0.2s ease;
+}
+body.show-chatbot .chatbot-toggler {
+  transform: rotate(90deg);
+}
+.chatbot-toggler span {
+  color: #fff;
+  position: absolute;
+}
+.chatbot-toggler span:last-child,
+body.show-chatbot .chatbot-toggler span:first-child  {
+  opacity: 0;
+}
+body.show-chatbot .chatbot-toggler span:last-child {
+  opacity: 1;
+}
+
+/* Chatbot Styles */
+.chatbot {
+  right: 35px;
+  bottom: 90px;
+  width: 420px;
+  height: 480px;
+  background: #fff;
+  border-radius: 15px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.5);
+  transform-origin: bottom right;
+  box-shadow: 0 0 128px 0 rgba(0,0,0,0.1),
+              0 32px 64px -48px rgba(0,0,0,0.5);
+  transition: all 0.1s ease;
+}
+body.show-chatbot .chatbot {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+}
+.chatbot header {
+  padding: 16px 0;
+  position: relative;
+  text-align: center;
+  color: #fff;
+  background: #94D4EEDC;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+.chatbot header span {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  display: none;
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+header h2 {
+  font-size: 1.4rem;
+}
+.chatbot .chatbox {
+  overflow-y: auto;
+  height: 220px;
+  padding: 30px 20px 100px;
+}
+.chatbot :where(.chatbox, textarea)::-webkit-scrollbar {
+  width: 6px;
+}
+.chatbot :where(.chatbox, textarea)::-webkit-scrollbar-track {
+  background: #fff;
+  border-radius: 25px;
+}
+.chatbot :where(.chatbox, textarea)::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 25px;
+}
+.chatbox .chat {
+  display: flex;
+  list-style: none;
+}
+.chatbox .outgoing {
+  margin: 20px 0;
+  justify-content: flex-end;
+}
+.chatbox .incoming span {
+  width: 32px;
+  height: 32px;
+  color: #fff;
+  cursor: default;
+  text-align: center;
+  line-height: 32px;
+  align-self: flex-end;
+  background: #94D4EEDC;
+  border-radius: 4px;
+  margin: 0 10px 35px 0;
+}
+.chatbox .chat p {
+  white-space: pre-wrap;
+  padding: 12px 16px;
+  border-radius: 10px 10px 0 10px;
+  max-width: 75%;
+  color: #fff;
+  font-size: 0.95rem;
+  background: #94D4EEDC;
+}
+.chatbox .incoming p {
+  border-radius: 10px 10px 10px 0;
+}
+.chatbox .chat p.error {
+  color: #721c24;
+  background: #f8d7da;
+}
+.chatbox .incoming p {
+  color: #000;
+  background: #f2f2f2;
+}
+.chatbot .chat-input {
+  display: flex;
+  gap: 5px;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: #fff;
+  padding: 3px 20px;
+  border-top: 1px solid #ddd;
+}
+.chat-input textarea {
+  height: 55px;
+  width: 100%;
+  border: none;
+  outline: none;
+  resize: none;
+  max-height: 180px;
+  padding: 15px 15px 15px 0;
+  font-size: 0.95rem;
+}
+.chat-input span {
+  align-self: flex-end;
+  color: #94D4EEDC;
+  cursor: pointer;
+  height: 55px;
+  display: flex;
+  align-items: center;
+  visibility: hidden;
+  font-size: 1.35rem;
+}
+.chat-input textarea:valid ~ span {
+  visibility: visible;
+}
+
+@media (max-width: 490px) {
+  .chatbot-toggler {
+    right: 20px;
+    bottom: 20px;
+    height: 80px;
+    width: 80px;
+  }
+  .chatbot {
+    right: 10px;
+    bottom: 90px;
+    height: 430px;
+    width: 80%;
+    border-radius: 10px;
+  }
+  .chatbot .chatbox {
+    height: calc(100% - 55px);
+    padding: 20px 10px 70px;
+  }
+  .chatbot .chat-input {
+    padding: 5px 10px;
+  }
+  .chatbot header {
+    padding: 12px 0;
+  }
+  .chatbot header span {
+    display: block;
+  }
+}
+    </style>
+</head>
+
+<body class="home page-template-default page page-id-2039 gdlr-core-body woocommerce-no-js tribe-no-js kingster-body kingster-body-front kingster-full  kingster-with-sticky-navigation  kingster-blockquote-style-1 gdlr-core-link-to-lightbox">
+    <div class="kingster-mobile-header-wrap">
+        <div class="kingster-mobile-header kingster-header-background kingster-style-slide kingster-sticky-mobile-navigation " id="kingster-mobile-header">
+            <div class="kingster-mobile-header-container kingster-container clearfix">
+                <div class="kingster-logo  kingster-item-pdlr">
+                    <div class="kingster-logo-inner">
+                        <a class="" href="{% url 'index' %}"><img src="{% static 'images/ik-logo-preview.png' %}" alt="" /></a>
+                    </div>
+                </div>
+                <div class="kingster-mobile-menu-right">
+                    <div class="kingster-mobile-menu"><a class="kingster-mm-menu-button kingster-mobile-menu-button kingster-mobile-button-hamburger" href="#kingster-mobile-menu"><span></span></a>
+                        <div class="kingster-mm-menu-wrap kingster-navigation-font" id="kingster-mobile-menu" data-slide="right">
+                            <ul id="menu-main-navigation" class="m-menu">
+                                <li class="menu-item menu-item-home current-menu-item menu-item-has-children"><a href="{% url 'index' %}">Home</a> </li>
+                                <li class="menu-item menu-item-has-children"><a href="{% url 'aboutus' %}">About Us</a>
+                                    <ul class="sub-menu">
+                                        <li class="menu-item" ><a href="{% url 'aboutus' %}">About Us</a></li>
+                                        <li class="menu-item"><a href="{% url 'ikhistory' %}">IK History</a></li>
+                                        <li class="menu-item"><a href="{% url 'ikmission' %}">IK Vision & Mission</a></li>
+                                        <li class="menu-item"><a href="{% url 'ikpresidentmessage' %}">President's Message</a></li>
+                                        <li class="menu-item"><a href="{% url 'exploreindore' %}">Explore Indore</a></li>
+                                    </ul>            
+                                </li>
+                                <li class="menu-item menu-item-has-children"><a href="#">Institutions</a>
+                                    <ul class="sub-menu">
+                                        <ul class="sub-menu">
+                                            <li class="menu-item" data-size="60"><a href="{% url 'ikcollegepalasia' %}">Islamia Karimia College (Palasia)</a></li>
+                                            <li class="menu-item" data-size="60"><a href="{% url 'ikgirlscolloge' %}">Islamia Karimia BAB Girls College (Ushaganj)</a></li>
+                                            <li class="menu-item" data-size="60"><a href="{% url 'ikcsmngmt' %}">Islamia Institute of Computer Science & Management</a></li>
+                                            <li class="menu-item" data-size="60"><a href="{% url 'ikiti' %}">Islamia Private I.T.I (Sanyogitaganj, Chhawni)</a></li>
+                                            <li class="menu-item" data-size="60"><a href="{% url 'itvi' %}">Islamia Technical & Vocational Institute</a></li>
+                                            <li class="menu-item" data-size="60"><a href="{% url 'stumar' %}">St. Umar Hr. Sec. School English Medium (Palasia)</a></li>
+                                            <li class="menu-item" data-size="60"><a href="{% url 'stumaracademy' %}">St. Umar Academy C.B.S.E (Palasia)</a></li>
+                                            <li class="menu-item" data-size="60"><a href="{% url 'ikboysschool' %}">I.K Boys Hr. Sec. School (Sanyogita Ganj Chhawni)</a></li>
+                                            <li class="menu-item" data-size="60"><a href="{% url 'ikgirlsschool' %}">I.K Girls Hr.Sec. School (Ushaganj, Chhawni)</a></li>
+                                            <li class="menu-item" data-size="60"><a href="{% url 'stmustafa' %}">St. Mustafa Raza High School (Azad Nagar)</a></li>
+                                            <li class="menu-item" data-size="60"><a href="{% url 'ikskyheight' %}">I.K Sky Height International Prep School</a></li>
+                                            <li class="menu-item" data-size="60"><a href="{% url 'ikcochingclasses' %}">IK Coaching Classes</a></li>
+                                        </ul>
+                                    </ul>
+                                </li>
+                                <li class="menu-item menu-item-has-children"><a href="#">Infrastructure</a>
+                                    <ul class="sub-menu">
+                                        <li class="menu-item"><a href="{% url 'ikcomputerlab' %}">Computer Lab</a></li>
+                                        <li class="menu-item"><a href="{% url 'ikroboticslab' %}">Robotics Lab</a></li>
+                                        <li class="menu-item"><a href="{% url 'ikphysicslab' %}">Physics Lab</a></li>
+                                        <li class="menu-item"><a href="{% url 'ikchemistrylab' %}">Chemistry Lab</a></li>
+                                        <li class="menu-item"><a href="{% url 'ikbotanylab' %}">Botany Lab</a></li>
+                                        <li class="menu-item"><a href="{% url 'ikzoologylab' %}">Zoology Lab</a></li>
+                                        <li class="menu-item"><a href="{% url 'iklibrary' %}">Library</a></li>
+                                        <li class="menu-item"><a href="{% url 'iksports' %}">Sports</a></li>
+                                        <li class="menu-item"><a href="{% url 'ikbotanical' %}">Botanical Garden</a></li>
+                                    </ul>
+                                </li>                                                                                                 
+                                <li class="menu-item menu-item-has-children"><a href="#">Academics</a>
+                                    <ul class="sub-menu">
+                                        <li class="menu-item menu-item-has-children"><a>UG Courses</a>
+                                            <ul class="sub-menu">
+                                                <li class="menu-item"><a href="{% url 'bsccs' %}">B.Sc. - Computer Science</a></li>
+                                                <li class="menu-item"><a href="{% url 'bscmaths' %}">B.Sc. - Mathematics</a></li>
+                                                <li class="menu-item"><a href="{% url 'bscbiology' %}">B.Sc. - Biology</a></li>
+                                                <li class="menu-item"><a href="{% url 'bscmicrobiology' %}">B.Sc. - Microbiology</a></li>
+                                                <li class="menu-item"><a href="{% url 'bcom' %}">B.Com. Plain</a></li>
+                                                <li class="menu-item"><a href="{% url 'bcomcomputer' %}">B.Com. Computer Application</a></li>
+                                                <li class="menu-item"><a href="{% url 'bapoliticalscience' %}">B.A. - Political Science</a></li>
+                                                <li class="menu-item"><a href="{% url 'basociology' %}">B.A. - Sociology</a></li>
+                                                <li class="menu-item"><a href="{% url 'bahistory' %}">B.A. - History</a></li>
+                                                <li class="menu-item"><a href="{% url 'baeconomics' %}">B.A. - Economics</a></li>
+                                                <li class="menu-item"><a href="{% url 'baenglish' %}">B.A. - English</a></li>
+                                                <li class="menu-item"><a href="{% url 'bahindi' %}">B.A. - Hindi</a></li>
+                                                <li class="menu-item"><a href="{% url 'baurdu' %}">B.A. - Urdu</a></li>
+                                                <li class="menu-item"><a href="{% url 'bca' %}">B.C.A</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="menu-item menu-item-has-children"><a href="#">PG Courses</a>
+                                            <ul class="sub-menu">
+                                                <li class="menu-item"><a href="{% url 'mscchemistry' %}">M.Sc. - Chemistry</a></li>
+                                                <li class="menu-item"><a href="{% url 'mscbotany' %}">M.Sc. - Botany</a></li>
+                                                <li class="menu-item"><a href="{% url 'msczoology' %}">M.Sc. - Zoology</a></li>
+                                                <li class="menu-item"><a href="{% url 'mscmath' %}">M.Sc. - Maths</a></li>
+                                                <li class="menu-item"><a href="{% url 'mscmicrobiology' %}">M.Sc. - Microbiology</a></li>
+                                                <li class="menu-item"><a href="{% url 'mcom' %}">M.Com</a></li>
+                                                <li class="menu-item"><a href="{% url 'mapoliticalscience' %}">M.A. - Political Science</a></li>
+                                                <li class="menu-item"><a href="{% url 'masociology' %}">M.A. - Sociology</a></li>
+                                                <li class="menu-item"><a href="{% url 'maeconomics' %}">M.A. - Economics</a></li>
+                                                <li class="menu-item"><a href="{% url 'maurdu' %}">M.A. - Urdu</a></li>
+                                                <li class="menu-item"><a href="{% url 'pgdca' %}">PGDCA</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="menu-item menu-item-has-children">
+                                            <a href="#">Short Term Courses</a>
+                                            <ul class="sub-menu">
+                                                <li class="menu-item"><a href="{% url 'androiddeveloper' %}">Android Developer</a></li>
+                                                <li class="menu-item"><a href="{% url 'aspcore' %}">ASP.NET Core</a></li>
+                                                <li class="menu-item"><a href="{% url 'backend' %}">Back-End Developer</a></li>
+                                                <li class="menu-item"><a href="{% url 'dsa' %}">DSA</a></li>
+                                                <li class="menu-item"><a href="{% url 'frontend' %}">Front-End Developer</a></li>
+                                                <li class="menu-item"><a href="{% url 'oraclejava' %}">Oracle Java</a></li>
+                                                <li class="menu-item"><a href="{% url 'oraclesql' %}">Oracle SQL</a></li>
+                                                <li class="menu-item"><a href="{% url 'python' %}">Python & Django</a></li>
+                                                <li class="menu-item"><a href="{% url 'uiuxdesign' %}">UI UX Design</a></li>
+                                                <li class="menu-item"><a href="{% url 'videoediting' %}">Video Editing</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="kingster-normal-menu"><a href="{% url 'ikgallery' %}" class="sf-with-ul-pre">Gallery</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="kingster-body-outer-wrapper ">
+        <div class="kingster-body-wrapper clearfix  kingster-with-frame">
+            <div class="kingster-top-bar">
+                <div class="kingster-top-bar-background"></div>
+                <div class="kingster-top-bar-container kingster-container ">
+                    <div class="kingster-top-bar-container-inner clearfix">
+                        <div class="kingster-top-bar-left kingster-item-pdlr"><i class="fa fa-envelope-open-o" id="i_fd84_0"></i> iksocietyoffice@gmail.com <i class="fa fa-phone" id="i_fd84_1"></i> 0731-2701777</div>
+                        <div class="kingster-top-bar-right kingster-item-pdlr">
+                            <ul id="kingster-top-bar-menu" class="sf-menu kingster-top-bar-menu kingster-top-bar-right-menu">
+                                <li class="menu-item kingster-normal-menu"><a href="{% url 'tender_list' %}">E-Tender</a></li> 
+                                <li class="menu-item kingster-normal-menu"><a href="https://www.facebook.com/Iksociety" target="_blank" class="gdlr-core-social-network-icon" title="facebook"><i class="fa fa-facebook" ></i></a></li>                                                                                                   
+                                <li class="menu-item kingster-normal-menu"><a href="https://www.linkedin.com/in/ik-group-of-institution-441357252/" target="_blank" class="gdlr-core-social-network-icon" title="linkedin"><i class="fa fa-linkedin" ></i> </a> </li>                    
+                                <li class="menu-item kingster-normal-menu"><a href="https://www.instagram.com/ik_society/" target="_blank" class="gdlr-core-social-network-icon" title="instagram"><i class="fa fa-instagram" ></i> </a></li>                                                                   
+                                <li class="menu-item kingster-normal-menu"><a href="https://www.youtube.com/@ikgroupofinstitution5748" target="_blank" class="gdlr-core-social-network-icon" title="youtube"><i class="fa fa-youtube" ></i></a></li>                                                                   
+                            </ul>
+                            <div class="kingster-top-bar-right-social"></div><a class="kingster-top-bar-right-button" href="{% url 'applytoik' %}" target="_blank">Admission Enquiry</a>
+                        </div>
+                        </div>
+                </div>
+            </div>
+            <header class="kingster-header-wrap kingster-header-style-plain  kingster-style-menu-right kingster-sticky-navigation kingster-style-fixed" data-navigation-offset="75px">
+                <div class="kingster-header-background"></div>
+                <div class="kingster-header-container  kingster-container">
+                    <div class="kingster-header-container-inner clearfix">
+                        <div class="kingster-logo  kingster-item-pdlr">
+                            <div class="kingster-logo-inner">
+                                <a class="" href="{% url 'index' %}"><img src="{% static 'images/ik-logo-preview.png' %}" alt="" /></a>
+                            </div>
+                        </div>
+                        <div class="kingster-navigation kingster-item-pdlr clearfix ">
+                            <div class="kingster-main-menu" id="kingster-main-menu">
+                                <ul id="menu-main-navigation-1" class="sf-menu">
+                                    <li class="menu-item menu-item-home current-menu-item menu-item-has-children kingster-normal-menu"><a href="{% url 'index' %}" class="sf-with-ul-pre">Home</a></li>                                                                       
+                                    <li class="menu-item menu-item-has-children kingster-normal-menu"><a href="{% url 'aboutus' %}" class="sf-with-ul-pre">About Us</a>
+                                        <ul class="sub-menu">
+                                            <li class="menu-item" data-size="60"><a href="{% url 'aboutus' %}">About Us</a></li>
+                                            <li class="menu-item" data-size="60"><a href="{% url 'ikhistory' %}">IK History</a></li>
+                                            <li class="menu-item" data-size="60"><a href="{% url 'ikmission' %}">IK Vision & Mission</a></li>
+                                            <li class="menu-item" data-size="60"><a href="{% url 'ikpresidentmessage' %}">President's Message</a></li>
+                                            <li class="menu-item" data-size="60"><a href="{% url 'exploreindore' %}">Explore Indore</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="menu-item menu-item-has-children kingster-normal-menu">
+                                        <a href="#" class="sf-with-ul-pre">Institutions</a>
+                                        <ul class="sub-menu">
+                                            <li class="menu-item" data-size="60"><a href="{% url 'ikcollegepalasia' %}">Islamia Karimia College (Palasia)</a></li>
+                                            <li class="menu-item" data-size="60"><a href="{% url 'ikgirlscolloge' %}">Islamia Karimia BAB Girls College (Ushaganj)</a></li>
+                                            <li class="menu-item" data-size="60"><a href="{% url 'ikcsmngmt' %}">Islamia Institute of Computer Science & Management</a></li>
+                                            <li class="menu-item" data-size="60"><a href="{% url 'ikiti' %}">Islamia Private I.T.I (Sanyogitaganj, Chhawni)</a></li>
+                                            <li class="menu-item" data-size="60"><a href="{% url 'itvi' %}">Islamia Technical & Vocational Institute</a></li>
+                                            <li class="menu-item" data-size="60"><a href="{% url 'stumar' %}">St. Umar Hr. Sec. School English Medium (Palasia)</a></li>
+                                            <li class="menu-item" data-size="60"><a href="{% url 'stumaracademy' %}">St. Umar Academy C.B.S.E (Palasia)</a></li>
+                                            <li class="menu-item" data-size="60"><a href="{% url 'ikboysschool' %}">I.K Boys Hr. Sec. School (Sanyogita Ganj Chhawni)</a></li>
+                                            <li class="menu-item" data-size="60"><a href="{% url 'ikgirlsschool' %}">I.K Girls Hr.Sec. School (Ushaganj, Chhawni)</a></li>
+                                            <li class="menu-item" data-size="60"><a href="{% url 'stmustafa' %}">St. Mustafa Raza High School (Azad Nagar)</a></li>
+                                            <li class="menu-item" data-size="60"><a href="{% url 'ikskyheight' %}">I.K Sky Height International Prep School</a></li>
+                                            <li class="menu-item" data-size="60"><a href="{% url 'ikcochingclasses' %}">IK Coaching Classes</a></li>
+                                        </ul>
+                                    </li>
+                                    
+                                    </li>    
+                                    <li class="menu-item menu-item-has-children kingster-normal-menu">
+                                        <a href="#" class="sf-with-ul-pre">Infrastructure</a>
+                                        <ul class="sub-menu">
+                                            <li class="menu-item" data-size="60"><a href="{% url 'ikcomputerlab' %}">Computer Lab</a></li>
+                                            <li class="menu-item" data-size="60"><a href="{% url 'ikroboticslab' %}">Robotics Lab</a></li>
+                                            <li class="menu-item" data-size="60"><a href="{% url 'ikphysicslab' %}">Physics Lab</a></li>
+                                            <li class="menu-item" data-size="60"><a href="{% url 'ikchemistrylab' %}">Chemistry Lab</a></li>
+                                            <li class="menu-item" data-size="60"><a href="{% url 'ikbotanylab' %}">Botany Lab</a></li>
+                                            <li class="menu-item" data-size="60"><a href="{% url 'ikzoologylab' %}">Zoology Lab</a></li>
+                                            <li class="menu-item" data-size="60"><a href="{% url 'iklibrary' %}">Library</a></li>
+                                            <li class="menu-item" data-size="60"><a href="{% url 'iksports' %}">Sports</a></li>
+                                            <li class="menu-item" data-size="60"><a href="{% url 'ikbotanical' %}">Botanical Garden</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="menu-item menu-item-has-children kingster-mega-menu"><a href="#" class="sf-with-ul-pre">Academics</a>
+                                        <div class="sf-mega sf-mega-full megaimg">
+                                            <ul class="sub-menu">
+                                                <li class="menu-item menu-item-has-children" data-size="15">
+                                                    <a class="sf-with-ul-pre">Under Graduate Courses</a>
+                                                    <ul class="sub-menu">
+                                                        <li class="menu-item"><a href="{% url 'bsccs' %}">B.Sc. - Computer Science</a></li>
+                                                        <li class="menu-item"><a href="{% url 'bscmaths' %}">B.Sc. - Mathematics</a></li>
+                                                        <li class="menu-item"><a href="{% url 'bscbiology' %}">B.Sc. - Biology</a></li>
+                                                        <li class="menu-item"><a href="{% url 'bscmicrobiology' %}">B.Sc. - Microbiology</a></li>
+                                                        <li class="menu-item"><a href="{% url 'bcom' %}">B.Com. Plain</a></li>
+                                                        <li class="menu-item"><a href="{% url 'bcomcomputer' %}">B.Com. Computer Application</a></li>
+                                                        <li class="menu-item"><a href="{% url 'bapoliticalscience' %}">B.A. - Political Science</a></li>
+                                                        <li class="menu-item"><a href="{% url 'basociology' %}">B.A. - Sociology</a></li>
+                                                        <li class="menu-item"><a href="{% url 'bahistory' %}">B.A. - History</a></li>
+                                                        <li class="menu-item"><a href="{% url 'baeconomics' %}">B.A. - Economics</a></li>
+                                                        <li class="menu-item"><a href="{% url 'baenglish' %}">B.A. - English</a></li>
+                                                        <li class="menu-item"><a href="{% url 'bahindi' %}">B.A. - Hindi</a></li>
+                                                        <li class="menu-item"><a href="{% url 'baurdu' %}">B.A. - Urdu</a></li>
+                                                        <li class="menu-item"><a href="{% url 'bca' %}">B.C.A</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li class="menu-item menu-item-has-children" data-size="15">
+                                                    <a href="#" class="sf-with-ul-pre">Post Graduate Courses</a>
+                                                    <ul class="sub-menu">
+                                                        <li class="menu-item"><a href="{% url 'mscchemistry' %}">M.Sc. - Chemistry</a></li>
+                                                        <li class="menu-item"><a href="{% url 'mscbotany' %}">M.Sc. - Botany</a></li>
+                                                        <li class="menu-item"><a href="{% url 'msczoology' %}">M.Sc. - Zoology</a></li>
+                                                        <li class="menu-item"><a href="{% url 'mscmath' %}">M.Sc. - Maths</a></li>
+                                                        <li class="menu-item"><a href="{% url 'mscmicrobiology' %}">M.Sc. - Microbiology</a></li>
+                                                        <li class="menu-item"><a href="{% url 'mcom' %}">M.Com</a></li>
+                                                        <li class="menu-item"><a href="{% url 'mapoliticalscience' %}">M.A. - Political Science</a></li>
+                                                        <li class="menu-item"><a href="{% url 'masociology' %}">M.A. - Sociology</a></li>
+                                                        <li class="menu-item"><a href="{% url 'maeconomics' %}">M.A. - Economics</a></li>
+                                                        <li class="menu-item"><a href="{% url 'maurdu' %}">M.A. - Urdu</a></li>
+                                                        <li class="menu-item"><a href="{% url 'pgdca' %}">PGDCA</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li class="menu-item menu-item-has-children" data-size="15">
+                                                    <a href="#" class="sf-with-ul-pre">Short Term Courses</a>
+                                                    <ul class="sub-menu">
+                                                        <li class="menu-item"><a href="{% url 'androiddeveloper' %}">Android Developer</a></li>
+                                                        <li class="menu-item"><a href="{% url 'aspcore' %}">ASP.NET Core</a></li>
+                                                        <li class="menu-item"><a href="{% url 'backend' %}">Back-End Developer</a></li>
+                                                        <li class="menu-item"><a href="{% url 'dsa' %}">DSA</a></li>
+                                                        <li class="menu-item"><a href="{% url 'frontend' %}">Front-End Developer</a></li>
+                                                        <li class="menu-item"><a href="{% url 'oraclejava' %}">Oracle Java</a></li>
+                                                        <li class="menu-item"><a href="{% url 'oraclesql' %}">Oracle SQL</a></li>
+                                                        <li class="menu-item"><a href="{% url 'python' %}">Python & Django</a></li>
+                                                        <li class="menu-item"><a href="{% url 'uiuxdesign' %}">UI UX Design</a></li>
+                                                        <li class="menu-item"><a href="{% url 'videoediting' %}">Video Editing</a></li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                    <li class="kingster-normal-menu"><a href="{% url 'ikgallery' %}" class="sf-with-ul-pre">Gallery</a></li>
+                                </ul>
+                                <div class="kingster-navigation-slide-bar" id="kingster-navigation-slide-bar"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <button class="chatbot-toggler">
+                <span class="toggle-text">Chat with Us!</span>
+                <span class="material-symbols-rounded">mode_comment</span>
+                
+              </button>
+              <div class="chatbot">
+                <header>
+                  <h3>AI Chatbot</h3>
+                  <span class="close-btn material-symbols-outlined">close</span>
+                </header>
+                <ul class="chatbox">
+                  <li class="chat incoming">
+                    <span class="material-symbols-outlined">smart_toy</span>
+                    <p>Hi there 👋<br>How can I help you today?<br>I am an AI-based chatbot. My information may sometimes be incorrect, but I am continually improving.</p>
+                  </li>
+                </ul>
+                <div class="chat-input">
+                  <textarea placeholder="Enter a message..." spellcheck="false" required></textarea>
+                  <span id="send-btn" class="material-symbols-rounded">send</span>
+                </div>
+              </div>
+          <div class="kingster-page-title-wrap  kingster-style-custom kingster-left-align" style="background-image: url('{% static 'upload/commerce-with-computer.jpg' %}');">
+                <div class="kingster-header-transparent-substitute"></div>
+                <div class="kingster-page-title-overlay"></div>
+                <div class="kingster-page-title-bottom-gradient"></div>
+                <div class="kingster-page-title-container kingster-container">
+                    <div class="kingster-page-title-content kingster-item-pdlr" style="padding-top: 400px ;padding-bottom: 60px ;">
+                        <h1 class="kingster-page-title" style="font-size: 48px ;font-weight: 700 ;text-transform: none ;letter-spacing: 0px ;color: #ffffff ;">BCom in Computer Application</h1></div>
+                </div>
+            </div>
+            <div class="kingster-breadcrumbs">
+                <div class="kingster-breadcrumbs-container kingster-container">
+                    <div class="kingster-breadcrumbs-item kingster-item-pdlr"> <span property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage" href="{% url 'index' %}" class="home"><span property="name">Home</span></a>
+                        <meta property="position" content="1">
+                        </span>&gt;<span property="itemListElement" typeof="ListItem"><span property="name">Bachelor Of Commerce in Computer Application</span>
+                        <meta property="position" content="2">
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="kingster-page-wrapper" id="kingster-page-wrapper">
+                <div class="gdlr-core-page-builder-body">
+                    <div class="gdlr-core-pbf-sidebar-wrapper " style="margin: 0px 0px 30px 0px;">
+                        <div class="gdlr-core-pbf-sidebar-container gdlr-core-line-height-0 clearfix gdlr-core-js gdlr-core-container">
+                            <div class="gdlr-core-pbf-sidebar-content  gdlr-core-column-40 gdlr-core-pbf-sidebar-padding gdlr-core-line-height gdlr-core-column-extend-left" style="padding: 35px 0px 20px 0px;">
+                                <div class="gdlr-core-pbf-sidebar-content-inner">
+                                    <div class="gdlr-core-pbf-element">
+                                        <div class="gdlr-core-title-item gdlr-core-item-pdb clearfix  gdlr-core-left-align gdlr-core-title-item-caption-top gdlr-core-item-pdlr">
+                                            <div class="gdlr-core-title-item-title-wrap clearfix">
+                                                <h3 class="gdlr-core-title-item-title gdlr-core-skin-title " style="font-size: 27px ;font-weight: 600 ;letter-spacing: 0px ;text-transform: none ;">Overview</h3></div>
+                                        </div>
+                                    </div>
+                                    <div class="gdlr-core-pbf-element">
+                                        <div class="gdlr-core-text-box-item gdlr-core-item-pdlr gdlr-core-item-pdb gdlr-core-left-align">
+                                            <div class="gdlr-core-text-box-item-content" style="font-size: 16px ;text-transform: none ;">
+                                                <p><strong>Bachelor of Commerce in Computer Application (B.Com CA)</strong> from <strong>Islamia Karimia College</strong> integrates commerce subjects with computer science and applications. The curriculum covers accounting, finance, business management, alongside courses in programming, database management, and information technology.</p>
+                                                <p>Students gain a strong foundation in <strong>both commerce and computer applications</strong>, equipping them with a diverse skill set suitable for modern business environments. Practical projects, internships, and industry collaborations provide hands-on experience, while specialized courses in areas like e-commerce, software development, or business analytics prepare graduates for careers at the intersection of commerce and technology. Graduates of B.Com CA programs are well-positioned for roles in finance, banking, accounting, IT consulting, software development, or entrepreneurial ventures, with opportunities for further studies or professional certifications to enhance their career prospects.</p>     
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="gdlr-core-pbf-element">
+                                        <div class="gdlr-core-title-item gdlr-core-item-pdb clearfix  gdlr-core-left-align gdlr-core-title-item-caption-top gdlr-core-item-pdlr" style="padding-bottom: 40px ;">
+                                            <div class="gdlr-core-title-item-title-wrap clearfix">
+                                                <h3 class="gdlr-core-title-item-title gdlr-core-skin-title " style="font-size: 22px ;font-weight: 600 ;letter-spacing: 0px ;text-transform: none ;color: #223d71 ;margin-right: 30px ;">Majors</h3>
+                                                <div class="gdlr-core-title-item-divider gdlr-core-right gdlr-core-skin-divider" style="font-size: 22px ;border-bottom-width: 3px ;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="gdlr-core-pbf-column gdlr-core-column-20 gdlr-core-column-first">
+                                        <div class="gdlr-core-pbf-column-content-margin gdlr-core-js " style="margin: 0px -7px 0px 0px;">
+                                            <div class="gdlr-core-pbf-column-content clearfix gdlr-core-js ">
+                                                <div class="gdlr-core-pbf-element">
+                                                    <div class="gdlr-core-feature-box-item gdlr-core-item-pdlr gdlr-core-item-pdb gdlr-core-center-align">
+                                                        <div class="gdlr-core-feature-box gdlr-core-js gdlr-core-feature-box-type-outer" style="background-color: #3db166 ;border-width: 0px 0px 0px 0px;border-radius: 3px;-moz-border-radius: 3px;-webkit-border-radius: 3px;">
+                                                            <div class="gdlr-core-feature-box-background" style="background-image: url('{% static 'upload/ecommerce.jpg' %}'); opacity: 0.80;"></div>
+                                                            <div class="gdlr-core-feature-box-content gdlr-core-sync-height-content">
+                                                                <h3 class="gdlr-core-feature-box-item-title" style="font-size: 16px ;font-weight: 600 ;">E-Commerce</h3></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="gdlr-core-pbf-column gdlr-core-column-20">
+                                        <div class="gdlr-core-pbf-column-content-margin gdlr-core-js " style="margin: 0px -3px 0px -3px;">
+                                            <div class="gdlr-core-pbf-column-content clearfix gdlr-core-js ">
+                                                <div class="gdlr-core-pbf-element">
+                                                    <div class="gdlr-core-feature-box-item gdlr-core-item-pdlr gdlr-core-item-pdb gdlr-core-center-align">
+                                                        <div class="gdlr-core-feature-box gdlr-core-js gdlr-core-feature-box-type-outer" style="background-color: #3db166 ;border-width: 0px 0px 0px 0px;border-radius: 3px;-moz-border-radius: 3px;-webkit-border-radius: 3px;">
+                                                            <div class="gdlr-core-feature-box-background" style="background-image: url('{% static 'upload/web-technologies.jpg' %}'); opacity: 0.80;"></div>
+                                                            <div class="gdlr-core-feature-box-content gdlr-core-sync-height-content">
+                                                                <h3 class="gdlr-core-feature-box-item-title" style="font-size: 16px ;font-weight: 600 ;">Web Technologies</h3></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="gdlr-core-pbf-column gdlr-core-column-20">
+                                        <div class="gdlr-core-pbf-column-content-margin gdlr-core-js " style="margin: 0px 0px 0px -7px;padding: 0px 0px 45px 0px;">
+                                            <div class="gdlr-core-pbf-column-content clearfix gdlr-core-js ">
+                                                <div class="gdlr-core-pbf-element">
+                                                    <div class="gdlr-core-feature-box-item gdlr-core-item-pdlr gdlr-core-item-pdb gdlr-core-center-align">
+                                                        <div class="gdlr-core-feature-box gdlr-core-js gdlr-core-feature-box-type-outer" style="background-color: #3db166 ;border-width: 0px 0px 0px 0px;border-radius: 3px;-moz-border-radius: 3px;-webkit-border-radius: 3px;">
+                                                            <div class="gdlr-core-feature-box-background" style="background-image: url('{% static 'upload/data-analytics.jpg' %}'); opacity: 0.80;"></div>
+                                                            <div class="gdlr-core-feature-box-content gdlr-core-sync-height-content">
+                                                                <h3 class="gdlr-core-feature-box-item-title" style="font-size: 16px ;font-weight: 600 ;">Data Analytics</h3></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="gdlr-core-pbf-element">
+                                        <div class="gdlr-core-text-box-item gdlr-core-item-pdlr gdlr-core-item-pdb gdlr-core-left-align" style="padding-bottom: 15px ;">
+                                            <div class="gdlr-core-text-box-item-content" style="font-size: 21px ;text-transform: none ;color: #3db166 ;">
+                                                <p>These topics equip students with both commerce-related knowledge and technical skills, preparing them for careers that require a blend of business acumen and proficiency in computer applications.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="gdlr-core-pbf-element">
+                                        <div class="gdlr-core-divider-item gdlr-core-divider-item-normal gdlr-core-item-pdlr gdlr-core-center-align">
+                                            <div class="gdlr-core-divider-line gdlr-core-skin-divider" style="border-color: #3db166 ;border-bottom-width: 3px ;"></div>
+                                        </div>
+                                    </div>
+                                    <div class="gdlr-core-pbf-element">
+                                        <div class="gdlr-core-text-box-item gdlr-core-item-pdlr gdlr-core-item-pdb gdlr-core-left-align">
+                                            <div class="gdlr-core-text-box-item-content" style="font-size: 17px ;text-transform: none ;">
+                                                <p>Provided by the <strong>IK College</strong>, Proficiency in DBMS, project management, accounting software, and cloud computing is essential for B.Com Computer Application students. DBMS skills enable efficient data management, project management ensures effective project execution, accounting software mastery facilitates accurate financial management, and cloud computing knowledge supports scalable and cost-effective IT solutions, preparing students for diverse career paths blending business and technology.</p>                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="gdlr-core-pbf-element">
+                                        <div class="gdlr-core-icon-list-item gdlr-core-item-pdlr gdlr-core-item-pdb clearfix " style="padding-bottom: 25px ;">
+                                            <ul>
+                                                <li class=" gdlr-core-skin-divider" style="margin-bottom: 18px ;"><span class="gdlr-core-icon-list-icon-wrap" style="margin-top: 5px ;"><i class="gdlr-core-icon-list-icon fa fa-dot-circle-o" style="color: #192f59 ;font-size: 18px ;width: 18px ;" ></i></span>
+                                                    <div class="gdlr-core-icon-list-content-wrap"><span class="gdlr-core-icon-list-content" style="font-size: 18px ;">Cloud Computing</span></div>
+                                                </li>
+                                                <li class=" gdlr-core-skin-divider" style="margin-bottom: 18px ;"><span class="gdlr-core-icon-list-icon-wrap" style="margin-top: 5px ;"><i class="gdlr-core-icon-list-icon fa fa-dot-circle-o" style="color: #192f59 ;font-size: 18px ;width: 18px ;" ></i></span>
+                                                    <div class="gdlr-core-icon-list-content-wrap"><span class="gdlr-core-icon-list-content" style="font-size: 18px ;">Database Management System</span></div>
+                                                </li>
+                                                <li class=" gdlr-core-skin-divider" style="margin-bottom: 18px ;"><span class="gdlr-core-icon-list-icon-wrap" style="margin-top: 5px ;"><i class="gdlr-core-icon-list-icon fa fa-dot-circle-o" style="color: #192f59 ;font-size: 18px ;width: 18px ;" ></i></span>
+                                                    <div class="gdlr-core-icon-list-content-wrap"><span class="gdlr-core-icon-list-content" style="font-size: 18px ;">Project Management</span></div>
+                                                </li>
+                                                <li class=" gdlr-core-skin-divider" style="margin-bottom: 18px ;"><span class="gdlr-core-icon-list-icon-wrap" style="margin-top: 5px ;"><i class="gdlr-core-icon-list-icon fa fa-dot-circle-o" style="color: #192f59 ;font-size: 18px ;width: 18px ;" ></i></span>
+                                                    <div class="gdlr-core-icon-list-content-wrap"><span class="gdlr-core-icon-list-content" style="font-size: 18px ;">Accounting Software</span></div>
+                                                </li>
+                                                <li class=" gdlr-core-skin-divider" style="margin-bottom: 18px ;"><span class="gdlr-core-icon-list-icon-wrap" style="margin-top: 5px ;"><i class="gdlr-core-icon-list-icon fa fa-dot-circle-o" style="color: #192f59 ;font-size: 18px ;width: 18px ;" ></i></span>
+                                                    <div class="gdlr-core-icon-list-content-wrap"><span class="gdlr-core-icon-list-content" style="font-size: 18px ;">IT Consulting</span></div>
+                                                </li>
+                                                <li class=" gdlr-core-skin-divider" style="margin-bottom: 18px ;"><span class="gdlr-core-icon-list-icon-wrap" style="margin-top: 5px ;"><i class="gdlr-core-icon-list-icon fa fa-dot-circle-o" style="color: #192f59 ;font-size: 18px ;width: 18px ;" ></i></span>
+                                                    <div class="gdlr-core-icon-list-content-wrap"><span class="gdlr-core-icon-list-content" style="font-size: 18px ;">System Analysis</span></div>
+                                                </li>
+                                                <li class=" gdlr-core-skin-divider" style="margin-bottom: 18px ;"><span class="gdlr-core-icon-list-icon-wrap" style="margin-top: 5px ;"><i class="gdlr-core-icon-list-icon fa fa-dot-circle-o" style="color: #192f59 ;font-size: 18px ;width: 18px ;" ></i></span>
+                                                    <div class="gdlr-core-icon-list-content-wrap"><span class="gdlr-core-icon-list-content" style="font-size: 18px ;">E-commerce</span></div>
+                                                </li>
+                                                <li class=" gdlr-core-skin-divider" style="margin-bottom: 18px ;"><span class="gdlr-core-icon-list-icon-wrap" style="margin-top: 5px ;"><i class="gdlr-core-icon-list-icon fa fa-dot-circle-o" style="color: #192f59 ;font-size: 18px ;width: 18px ;" ></i></span>
+                                                    <div class="gdlr-core-icon-list-content-wrap"><span class="gdlr-core-icon-list-content" style="font-size: 18px ;">Business Analysis</span></div>
+                                                </li>
+                                                <li class=" gdlr-core-skin-divider" style="margin-bottom: 18px ;"><span class="gdlr-core-icon-list-icon-wrap" style="margin-top: 5px ;"><i class="gdlr-core-icon-list-icon fa fa-dot-circle-o" style="color: #192f59 ;font-size: 18px ;width: 18px ;" ></i></span>
+                                                    <div class="gdlr-core-icon-list-content-wrap"><span class="gdlr-core-icon-list-content" style="font-size: 18px ;">Financial Technology (Fintech)</span></div>
+                                                </li>
+                                                <li class=" gdlr-core-skin-divider" style="margin-bottom: 18px ;"><span class="gdlr-core-icon-list-icon-wrap" style="margin-top: 5px ;"><i class="gdlr-core-icon-list-icon fa fa-dot-circle-o" style="color: #192f59 ;font-size: 18px ;width: 18px ;" ></i></span>
+                                                    <div class="gdlr-core-icon-list-content-wrap"><span class="gdlr-core-icon-list-content" style="font-size: 18px ;">Information Security</span></div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="gdlr-core-pbf-sidebar-right gdlr-core-column-extend-right  kingster-sidebar-area gdlr-core-column-20 gdlr-core-pbf-sidebar-padding  gdlr-core-line-height" style="padding: 35px 0px 30px 0px;">
+                                <div class="gdlr-core-sidebar-item gdlr-core-item-pdlr">
+                                    <div id="text-18" class="widget widget_text kingster-widget">
+                                        <div class="textwidget">
+                                            <div class="gdlr-core-widget-box-shortcode " style="color: #ffffff ;padding: 30px 45px;background-color: #192f59 ;">
+                                                <div class="gdlr-core-widget-box-shortcode-content">
+                                                    </p>
+                                                    <h3 style="font-size: 20px; color: #fff; margin-bottom: 25px;">Department Contact Info</h3>
+                                                    <p><span style="color: #3db166; font-size: 16px; font-weight: 600;">Bachelor Of Commerce in Computer Application</span>
+                                                        <br /> <span style="font-size: 15px;"><br /> 2/2, Old Palasia<br /> Opposite Greater Kailash Nursing Home<br />Indore (M.P.)</span></p>
+                                                    <p><span style="font-size: 15px;">+91-731-2565112, 2560234<br /> info@ikcollegeindore.org<br /> </span></p>
+                                                    <p><span style="font-size: 16px; color: #3db166;">Mon &#8211; Fri 9:00A.M. &#8211; 5:00P.M.</span></p> <span class="gdlr-core-space-shortcode" style="margin-top: 20px ;"></span>
+                                                    
+                                                    <p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="gdlr-core-pbf-wrapper " style="padding: 65px 0px 60px 0px;">
+                        <div class="gdlr-core-pbf-background-wrap" style="background-color: #192f59 ;"></div>
+                        <div class="gdlr-core-pbf-wrapper-content gdlr-core-js ">
+                            <div class="gdlr-core-pbf-wrapper-container clearfix gdlr-core-container">
+                                <div class="gdlr-core-pbf-column gdlr-core-column-30 gdlr-core-column-first">
+                                    <div class="gdlr-core-pbf-column-content-margin gdlr-core-js " style="padding: 45px 0px 0px 0px;">
+                                        <div class="gdlr-core-pbf-column-content clearfix gdlr-core-js ">
+                                            <div class="gdlr-core-pbf-element">
+                                                <div class="gdlr-core-text-box-item gdlr-core-item-pdlr gdlr-core-item-pdb gdlr-core-left-align" style="padding-bottom: 20px ;">
+                                                    <div class="gdlr-core-text-box-item-content" style="font-size: 23px ;text-transform: none ;color: #ffffff ;">
+                                                        <p>Welcome to our vibrant college community, where innovation meets excellence in education. Explore our diverse programs, supportive faculty, and dynamic campus life.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="gdlr-core-pbf-element">
+                                                <div class="gdlr-core-button-item gdlr-core-item-pdlr gdlr-core-item-pdb gdlr-core-left-align"><a class="gdlr-core-button  gdlr-core-button-solid gdlr-core-button-no-border" href="{% url 'applytoik' %}" style="font-size: 14px ;font-weight: 700 ;letter-spacing: 0px ;padding: 13px 26px 16px 30px;text-transform: none ;margin: 0px 10px 10px 0px;border-radius: 2px;-moz-border-radius: 2px;-webkit-border-radius: 2px;background: #3db166 ;"><span class="gdlr-core-content" >Admission Enquiry</span><i class="gdlr-core-pos-right fa fa-external-link" style="font-size: 14px ;"  ></i></a></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="gdlr-core-pbf-column gdlr-core-column-30" id="gdlr-core-column-1">
+                                    <div class="gdlr-core-pbf-column-content-margin gdlr-core-js " style="margin: -123px 0px 0px 0px;padding: 0px 0px 0px 40px;">
+                                        <div class="gdlr-core-pbf-column-content clearfix gdlr-core-js ">
+                                            <div class="gdlr-core-pbf-element">
+                                                <div class="gdlr-core-image-item gdlr-core-item-pdlr gdlr-core-item-pdb  gdlr-core-center-align">
+                                                    <div class="gdlr-core-image-item-wrap gdlr-core-media-image  gdlr-core-image-item-style-rectangle" style="border-width: 0px;"><img src="{% static 'upload/shutterstock_183400235-400x257.jpg' %}" width="700" height="450" alt="" /></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer>
+                <div class="kingster-footer-wrapper ">
+                    <div class="kingster-footer-container kingster-container clearfix">
+                        <div class="kingster-footer-column kingster-item-pdlr kingster-column-15">
+                            <div id="text-2" class="widget widget_text kingster-widget">
+                                <div class="textwidget">
+                                    <p><img src="{% static 'upload/ik-logo-white.png' %}" alt="iklogo" />
+                                        <br /> <span class="gdlr-core-space-shortcode" id="span_1dd7_10"></span>
+                                        <br /> 16/4, Sharddhanand Marg
+                                        <br /> Chhawani hat Maidan
+                                        <br /> Indore (M.P.)</p>
+                                    <p><span id="span_1dd7_11">0731-2701777</span>
+                                        <br /> <span class="gdlr-core-space-shortcode" id="span_1dd7_12"></span>
+                                        <br /> <a id="a_1dd7_8" href="mailto:iksocietyoffice@gmail.com">iksocietyoffice@gmail.com</a></p>
+                                    <div class="gdlr-core-divider-item gdlr-core-divider-item-normal gdlr-core-left-align">
+                                        <div class="gdlr-core-divider-line gdlr-core-skin-divider" id="div_1dd7_111"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="kingster-footer-column kingster-item-pdlr kingster-column-15">
+                            <div id="gdlr-core-custom-menu-widget-2" class="widget widget_gdlr-core-custom-menu-widget kingster-widget">
+                                <h3 class="kingster-widget-title">Quick Links</h3><span class="clear"></span>
+                                <div class="menu-our-campus-container">
+                                    <ul id="menu-our-campus" class="gdlr-core-custom-menu-widget gdlr-core-menu-style-plain">
+                                        <li class="menu-item"><a href="{% url 'ikalumni' %}">Alumni</a></li>
+                                        <li class="menu-item"><a href="{% url 'register_vendor' %}">Vendor Registration</a></li>
+                                        <li class="menu-item"><a href="{% url 'career' %}">Career</a></li>
+                                        <li class="menu-item"><a href="{% url 'antiragging' %}">Anti Ragging</a></li>
+                                        <li class="menu-item"><a href="{% url 'contact' %}">Contact Us</a></li>
+                                        <li class="menu-item"><a href="{% url 'faq' %}">FAQ</a></li>
+                                        <li class="menu-item"><a href="{% url 'ncc' %}">NCC</a></li>
+                                        <li class="menu-item"><a href="{% url 'privacypolicy' %}">Privacy Policy</a></li>
+                                        <li class="menu-item"><a href="{% url 'sitemap' %}">Sitemap</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="kingster-footer-column kingster-item-pdlr kingster-column-15">
+                            <div id="gdlr-core-custom-menu-widget-3" class="widget widget_gdlr-core-custom-menu-widget kingster-widget">
+                                <h3 class="kingster-widget-title">Useful Links</h3><span class="clear"></span>
+                                <div class="menu-campus-life-container">
+                                    <ul id="menu-campus-life" class="gdlr-core-custom-menu-widget gdlr-core-menu-style-plain">
+                                        <li class="menu-item"><a href="https://www.education.gov.in/">Ministry of Education</a></li>
+                                        <li class="menu-item"><a href="https://scholarships.gov.in/">National Scholarship Portal</a></li>
+                                        <li class="menu-item"><a href="https://www.ugc.gov.in/">University Grants Commission</a></li>
+                                        <li class="menu-item"><a href="https://www.aicte-india.org/">AICTE</a></li>
+                                        <li class="menu-item"><a href="https://www.dauniv.ac.in/">DAVV</a></li>
+                                        <li class="menu-item"><a href="https://www.mcu.ac.in/">Makhanlal University</a></li> 
+                                        <li class="menu-item"><a href="https://mpbou.edu.in/">Bhoj University</a></li>                                                                                                                                                                   
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="kingster-footer-column kingster-item-pdlr kingster-column-15">
+                            <div id="gdlr-core-custom-menu-widget-4" class="widget widget_gdlr-core-custom-menu-widget kingster-widget">
+                                <h3 class="kingster-widget-title">Resources</h3><span class="clear"></span>
+                                <div class="menu-academics-container">
+                                    <ul id="menu-academics" class="gdlr-core-custom-menu-widget gdlr-core-menu-style-plain">                                        
+                                        <li class="menu-item"><a href="https://ncert.nic.in/textbook.php">NCERT Textbooks</a></li>
+                                        <li class="menu-item"><a href="https://www.abc.gov.in/">Academic Bank of Credits</a></li>
+                                        <li class="menu-item"><a href="https://www.digilocker.gov.in/">DigiLocker</a></li>
+                                        <li class="menu-item"><a href="https://ndl.iitkgp.ac.in/">National Digital Library of India</a></li>                                             
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="kingster-copyright-wrapper">
+                    <div class="kingster-copyright-container kingster-container clearfix">
+                        <div class="kingster-copyright-left kingster-item-pdlr">Copyright 2025 to 2030, Designed by ABS Softech</div>
+                        <div class="kingster-copyright-right kingster-item-pdlr">
+                            <div class="gdlr-core-social-network-item gdlr-core-item-pdb  gdlr-core-none-align" id="div_1dd7_112">
+                                <a href="https://www.facebook.com/Iksociety" target="_blank" class="gdlr-core-social-network-icon" title="facebook">
+                                    <i class="fa fa-facebook" ></i>
+                                </a>
+                                <a href="https://www.linkedin.com/in/ik-group-of-institution-441357252/" target="_blank" class="gdlr-core-social-network-icon" title="linkedin">
+                                    <i class="fa fa-linkedin" ></i>
+                                </a> 
+                                <a href="https://www.instagram.com/ik_society/" target="_blank" class="gdlr-core-social-network-icon" title="instagram">
+                                    <i class="fa fa-instagram" ></i>
+                                </a>
+                                <a href="https://www.youtube.com/@ikgroupofinstitution5748" target="_blank" class="gdlr-core-social-network-icon" title="youtube">
+                                    <i class="fa fa-youtube" ></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+
+	<script type='text/javascript' src='{% static "js/jquery/jquery.js" %}'></script>
+<script type='text/javascript' src='{% static "js/jquery/jquery-migrate.min.js" %}'></script>
+<script type='text/javascript' src='{% static "plugins/goodlayers-core/plugins/combine/script.js" %}'></script>
+<script type='text/javascript'>
+    var gdlr_core_pbf = {
+        "admin": "",
+        "video": {
+            "width": "640",
+            "height": "360"
+        },
+        "ajax_url": "#"
+    };
+</script>
+<script type='text/javascript' src='{% static "plugins/goodlayers-core/include/js/page-builder.js" %}'></script>
+<script type='text/javascript' src='{% static "js/jquery/ui/effect.min.js" %}'></script>
+<script type='text/javascript'>
+    var kingster_script_core = {
+        "home_url": "{% static 'index.html' %}"
+    };
+</script>
+<script type='text/javascript' src='{% static "js/plugins.min.js" %}'></script>
+</body>
+</html>

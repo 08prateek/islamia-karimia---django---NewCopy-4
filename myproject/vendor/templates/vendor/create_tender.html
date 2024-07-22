@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>IK Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1, h2, h3 {
+            text-align: center;
+            color: #333;
+        }
+
+        .container {
+            width: 90%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        form input, form textarea, form select, form button {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100%;
+        }
+
+        form button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        form button:hover {
+            background-color: #45a049;
+        }
+
+        .tender-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .tender-item {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tender-item h3 {
+            margin-top: 0;
+            color: #4CAF50;
+        }
+
+        .tender-item p {
+            color: #333;
+            margin: 10px 0;
+        }
+
+        .tender-item .actions {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .tender-item .actions a {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .tender-item .actions a:hover {
+            background-color: #0056b3;
+        }
+
+        .tender-item .actions .delete-btn {
+            background-color: #f44336;
+        }
+
+        .tender-item .actions .delete-btn:hover {
+            background-color: #e53935;
+        }
+
+        .image-preview {
+            text-align: center;
+        }
+
+        .image-preview img {
+            max-width: 100px;
+            margin-top: 10px;
+            border-radius: 4px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table th, table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #f4f4f4;
+        }
+
+        table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .logout-link {
+            text-align: right;
+            padding: 10px;
+        }
+
+        .logout-link a {
+            color: #007BFF;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .logout-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Modern button styles */
+        .modern-button {
+            padding: 12px 20px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s, transform 0.2s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .modern-button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        .modern-button:active {
+            background-color: #004494;
+            transform: translateY(0);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .message {
+            text-align: center;
+            color: #f44336;
+            margin: 20px 0;
+            font-size: 18px;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .table-container {
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>IK Society Admin Dashboard</h1>
+
+        <h2>{% if tender %}Update{% else %}Create{% endif %} Tender</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" name="update">{% if tender %}Update{% else %}Create{% endif %} Tender</button>
+            {% if tender %}
+            <button type="submit" name="delete" style="background-color: #f44336;">Delete Tender</button>
+            {% endif %}
+        </form>
+
+        <h2>Existing Tenders</h2>
+        <div class="tender-list">
+            {% if tenders %}
+            {% for tender in tenders %}
+            <div class="tender-item">
+                <h3>{{ tender.title }}</h3>
+                <p>{{ tender.description }}</p>
+                {% if tender.image %}
+                <div class="image-preview">
+                    <img src="{{ tender.image.url }}" alt="{{ tender.title }}">
+                </div>
+                {% endif %}
+                <div class="actions">
+                    {% if tender.document %}
+                    <a href="{{ tender.document.url }}">View Document</a>
+                    {% endif %}
+                    <a href="{% url 'create_tender_with_id' tender.id %}">Edit</a>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="message">There are no tenders posted as of now.</div>
+            {% endif %}
+        </div>
+
+        <h2>Admin Management</h2>
+        <button id="vendor-registrations-btn" class="modern-button">Vendor Registrations</button>
+        <button id="tender-applications-btn" class="modern-button">Tender Applications</button>
+        <button id="contact-form-submissions-btn" class="modern-button">Contact Form Submissions</button>
+
+        <div id="vendor-registrations" class="hidden table-container">
+            <button class="close-button" onclick="hideSection('vendor-registrations')">&times;</button>
+            <h3>Vendor Registrations</h3>
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Contact</th>
+                    <th>Email</th>
+                    <th>Address</th>
+                    <th>GST Number</th>
+                    <th>Registration Date</th>
+                </tr>
+                {% for vendor in vendors %}
+                <tr>
+                    <td>{{ vendor.name }}</td>
+                    <td>{{ vendor.contact }}</td>
+                    <td>{{ vendor.email }}</td>
+                    <td>{{ vendor.address }}</td>
+                    <td>{{ vendor.gst_number }}</td>
+                    <td>{{ vendor.registration_date }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <div id="tender-applications" class="hidden table-container">
+            <button class="close-button" onclick="hideSection('tender-applications')">&times;</button>
+            <h3>Tender Applications</h3>
+            <table>
+                <tr>
+                    <th>Tender Title</th>
+                    <th>Vendor Name</th>
+                    <th>Vendor Contact</th>
+                    <th>Vendor Email</th>
+                    <th>Vendor Address</th>
+                    <th>Vendor GST Number</th>
+                    <th>Applied On</th>
+                </tr>
+                {% for application in tender_applications %}
+                <tr>
+                    <td>{{ application.tender.title }}</td>
+                    <td>{{ application.vendor_name }}</td>
+                    <td>{{ application.vendor_contact }}</td>
+                    <td>{{ application.vendor_email }}</td>
+                    <td>{{ application.vendor.address }}</td>
+                    <td>{{ application.vendor.gst_number }}</td>
+                    <td>{{ application.applied_on }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <div id="contact-form-submissions" class="hidden table-container">
+            <button class="close-button" onclick="hideSection('contact-form-submissions')">&times;</button>
+            <h3>Contact Form Submissions</h3>
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Contact</th>
+                    <th>Message</th>
+                    <th>Submitted On</th>
+                </tr>
+                {% for contact in contacts %}
+                <tr>
+                    <td>{{ contact.name }}</td>
+                    <td>{{ contact.email }}</td>
+                    <td>{{ contact.contact }}</td>
+                    <td>{{ contact.message }}</td>
+                    <td>{{ contact.submitted_on }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <div class="logout-link">
+            <a href="{% url 'logout' %}">Logout</a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('vendor-registrations-btn').addEventListener('click', function() {
+            document.getElementById('vendor-registrations').classList.toggle('hidden');
+        });
+
+        document.getElementById('tender-applications-btn').addEventListener('click', function() {
+            document.getElementById('tender-applications').classList.toggle('hidden');
+        });
+
+        document.getElementById('contact-form-submissions-btn').addEventListener('click', function() {
+            document.getElementById('contact-form-submissions').classList.toggle('hidden');
+        });
+
+        function hideSection(sectionId) {
+            document.getElementById(sectionId).classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
